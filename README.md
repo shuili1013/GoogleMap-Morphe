@@ -6,7 +6,7 @@ Makes **Google Maps navigate on an Android Auto head unit with its native car in
 
 Patched with [Morphe](https://morphe.software). The patched Maps installs under a different package, **alongside stock Google Maps**: keep stock Maps for driving, use the patched copy on the motorcycle.
 
-> Experimental. On 2026-11-14, the user confirmed the patched Maps works on a **Galaxy S25 (Android 16) + Pernis MS700CL over wireless Android Auto 18**, after installing the patched APK with **KingInstaller Classic**. The successful test used the local 1.0.3 bundle, including the template-only patch. Earlier tests also passed on the headunit emulator over USB. This does not establish compatibility with every phone or head unit. Test while parked before riding and follow local road signs.
+> Experimental. On 2026-11-14, the user confirmed the patched Maps works on a **Galaxy S25 (Android 16) + Pernis MS700CL over wireless Android Auto 18**, after installing the patched APK with **KingInstaller Classic**. The successful test used the 1.0.3 bundle, including the template-only patch. Earlier tests also passed on the headunit emulator over USB. This does not establish compatibility with every phone or head unit. Test while parked before riding and follow local road signs.
 
 ## Features
 
@@ -28,7 +28,7 @@ This project does not distribute Google Maps. Get the original APKM of the versi
 | Morphe Manager | <https://morphe.software> |
 | KingInstaller (for installing the finished APK on the tested Samsung setup) | [Official project and downloads](https://github.com/fcaronte/KingInstaller) |
 | **This version of MicroG-RE** (required) | [shuili1013/MicroG-RE releases](https://github.com/shuili1013/MicroG-RE/releases/tag/v7.3.0-maps-fix) → `microg-re-maps-fix-7.3.0.apk` |
-| This project's patch bundle | Add the remote source `github.com/shuili1013/Maps-AA-AnyMode-Morphe` in Morphe (or download `patches-1.0.1.mpp` from [Releases](https://github.com/shuili1013/Maps-AA-AnyMode-Morphe/releases) and add it as a local source) |
+| This project's patch bundle | Add the remote source `github.com/shuili1013/Maps-AA-AnyMode-Morphe` in Morphe (or download `patches-1.0.3.mpp` from [Releases](https://github.com/shuili1013/Maps-AA-AnyMode-Morphe/releases) and add it as a local source) |
 
 The bundle already includes the Dutch App Patches features it needs; you do not need to add Dutch App Patches separately.
 
@@ -56,11 +56,11 @@ If official MicroG-RE is already installed, **uninstall it first**, then install
    - `Allow any travel mode on Android Auto`
    - `Always two-wheeler on Android Auto`
    - `Skip private Android Auto car connection`
+   - `Android Auto template-only app`
 
    Do not add patches for Maps from other sources (e.g. `Clone app` from the official Morphe Patches).
-   For a bundle that provides `Android Auto template-only app`, also select it. It removes the old projection and notification entries and leaves the CAL navigation entry. It does not itself bypass package validation.
 
-   **Release status:** the repository's remote source currently points to **1.0.1**. The successful MS700CL test used a **local 1.0.3** build, which has not been published at the time of this update. Do not assume adding the remote source gives you 1.0.3. The template-only patch is absent from older bundles.
+   `Android Auto template-only app` removes the old projection and notification entries and leaves the CAL navigation entry. It does **not** by itself make a head unit accept the patched app; install-source validation is handled by KingInstaller in the next section. **This patch ships from 1.0.3 on**; older bundles do not have it.
 
 5. When patching finishes, **save/export the finished, signed APK** from Morphe. The input is an APKM; the file to install with KingInstaller must be the **complete patched single APK**, not the original APKM or an extracted base APK missing its splits.
 
@@ -119,7 +119,7 @@ The investigation initially treated Play's `app owners empty` as the complete ex
 | `Skip private Android Auto car connection` | This project | Maps' `CarConnectionHandler.onCarConnected` calls a private Android Auto service that always rejects a re-signed app (`Wrong signature - go/gearhead-retail-device`) and crashes it. The handler is skipped. |
 | `Always two-wheeler on Android Auto` | This project | Android Auto's "supported mode" becomes two-wheeler, so destinations searched on the head unit default to two-wheeler routes. |
 | `Allow any travel mode on Android Auto` | This project | Removes the two checks that refuse or end car navigation when the travel mode differs. |
-| `Android Auto template-only app` (local 1.0.3; not in published 1.0.1) | This project | Keeps CAL template navigation and removes legacy projection/notification entries. Install-source validation still applies. |
+| `Android Auto template-only app` (1.0.3 and later) | This project | Keeps CAL template navigation and removes legacy projection/notification entries. Install-source validation still applies. |
 
 Source: `patch/`. This project's patches are in `patch/patches/src/main/kotlin/tw/maps/`; the included Dutch App Patches code is in `patch/patches/src/main/kotlin/dutch/`, `patch/extensions/` and `patch/support/` (see [NOTICE](NOTICE) for what was changed). The full debugging history, logcat evidence and 26.44 name mappings are in [findings.md](findings.md) (Chinese).
 

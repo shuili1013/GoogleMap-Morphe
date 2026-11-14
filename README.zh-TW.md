@@ -6,7 +6,7 @@
 
 用 [Morphe](https://morphe.software) 修補,修補後的 Maps 以另一個 package 安裝,**與原廠 Google Maps 並存**:原廠的照常拿來開車,修補版拿來騎機車。
 
-> 實驗性專案。2026-11-14 使用者確認：**Galaxy S25（Android 16）＋ Pernis MS700CL，透過無線 Android Auto 18 可使用修補版 Maps**；關鍵是使用 **KingInstaller Classic** 安裝修補完成的 APK。成功案例使用本機 1.0.3 bundle（含 template-only patch）。先前也已在 headunit 模擬車機（USB）驗證。其他手機與車機尚不能保證相容，上路前請先停車測試，並依現地交通標誌行駛。
+> 實驗性專案。2026-11-14 使用者確認：**Galaxy S25（Android 16）＋ Pernis MS700CL，透過無線 Android Auto 18 可使用修補版 Maps**；關鍵是使用 **KingInstaller Classic** 安裝修補完成的 APK。成功案例使用 1.0.3 bundle（含 template-only patch）。先前也已在 headunit 模擬車機（USB）驗證。其他手機與車機尚不能保證相容，上路前請先停車測試，並依現地交通標誌行駛。
 
 ## 功能
 
@@ -28,7 +28,7 @@
 | Morphe Manager | <https://morphe.software> |
 | KingInstaller（本次 Samsung 實體車機成功案例使用的安裝工具） | [官方專案與下載](https://github.com/fcaronte/KingInstaller) |
 | **該版本的 MicroG-RE**(必須用這版) | [shuili1013/MicroG-RE releases](https://github.com/shuili1013/MicroG-RE/releases/tag/v7.3.0-maps-fix) → `microg-re-maps-fix-7.3.0.apk` |
-| 本專案的 patch bundle | 在 Morphe 加入 remote source `github.com/shuili1013/Maps-AA-AnyMode-Morphe`(或從 [Releases](https://github.com/shuili1013/Maps-AA-AnyMode-Morphe/releases) 下載 `patches-1.0.1.mpp`,用 Local 方式加入) |
+| 本專案的 patch bundle | 在 Morphe 加入 remote source `github.com/shuili1013/Maps-AA-AnyMode-Morphe`(或從 [Releases](https://github.com/shuili1013/Maps-AA-AnyMode-Morphe/releases) 下載 `patches-1.0.3.mpp`,用 Local 方式加入) |
 
 這個 bundle 已經包含所需的 Dutch App Patches 功能,**不用再另外加入 Dutch App Patches**。
 
@@ -56,11 +56,11 @@
    - `Allow any travel mode on Android Auto`
    - `Always two-wheeler on Android Auto`
    - `Skip private Android Auto car connection`
+   - `Android Auto template-only app`
 
    不要再從其他 source 勾 Maps 的 patch(例如官方 Morphe Patches 的 `Clone app`)。
-   如果使用的 bundle 有 `Android Auto template-only app`，也請勾選。它會移除舊 projection 與通知入口，只保留 CAL 導航入口；安裝來源驗證仍然需要通過。
 
-   **發布狀態：**本 repo 的 remote source 目前仍指向 **1.0.1**。MS700CL 成功案例使用的是**尚未發布的本機 1.0.3**，含 template-only patch。加入遠端來源不代表已取得 1.0.3；舊 bundle 沒有該選項。
+   `Android Auto template-only app` 會移除舊 projection 與通知入口，只保留 CAL 導航入口。它**不能**單獨讓車機接受修補版，安裝來源驗證仍然要靠下一節的 KingInstaller。**這個 patch 從 1.0.3 開始提供**，更舊的 bundle 沒有。
 
 5. 修補完成後，使用 Morphe 的儲存／匯出功能，保留**修補完成且已簽名的完整單一 APK**。原始輸入是 APKM，但交給 KingInstaller 的必須是成品 APK；不要選原始 APKM，也不要只抽出缺少 splits 的 base APK 安裝。
 
@@ -119,7 +119,7 @@
 | `Skip private Android Auto car connection` | 本專案 | Maps 的 `CarConnectionHandler.onCarConnected` 會呼叫 Android Auto 私有服務,重新簽名的 App 一律被拒(`Wrong signature - go/gearhead-retail-device`)並閃退。改為直接略過。 |
 | `Always two-wheeler on Android Auto` | 本專案 | Android Auto 的「支援模式」改為機車,讓在車機上搜尋的目的地預設走機車路線。 |
 | `Allow any travel mode on Android Auto` | 本專案 | 移除「模式不符就擋下/結束車機導航」的兩道檢查。 |
-| `Android Auto template-only app`（本機 1.0.3；已發布的 1.0.1 不含） | 本專案 | 保留 CAL 導航能力，移除舊 projection／通知入口；仍須通過安裝來源驗證。 |
+| `Android Auto template-only app`(1.0.3 起) | 本專案 | 保留 CAL 導航能力，移除舊 projection／通知入口；仍須通過安裝來源驗證。 |
 
 原始碼在 `patch/`。本專案的 patch 在 `patch/patches/src/main/kotlin/tw/maps/`;收錄的 Dutch App Patches 程式碼在 `patch/patches/src/main/kotlin/dutch/`、`patch/extensions/`、`patch/support/`(改了哪些地方見 [NOTICE](NOTICE))。完整除錯過程、logcat 證據與 26.44 的名稱對應見 [findings.md](findings.md)。
 
